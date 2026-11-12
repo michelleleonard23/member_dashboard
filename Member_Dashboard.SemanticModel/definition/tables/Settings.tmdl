@@ -1,0 +1,71 @@
+table Settings
+	lineageTag: 37eb78ac-da5a-4975-b899-bd7e545950c5
+
+	column ReserveTargetMonths
+		dataType: int64
+		formatString: 0
+		lineageTag: a3b11a49-51f3-4014-8341-256c69a8927c
+		summarizeBy: sum
+		sourceColumn: ReserveTargetMonths
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastClosedMonth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7faa9af2-dd02-4c20-a1c2-e810e8ae08ed
+		summarizeBy: none
+		sourceColumn: LastClosedMonth
+
+		variation Variation
+			isDefault
+			relationship: 9d61ded8-d62b-497b-8e10-b4b7f6e072d2
+			defaultHierarchy: LocalDateTable_6b7c905b-2c11-469b-ab3a-c729d1c3674d.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DuesShareRate
+		dataType: double
+		lineageTag: 24d2de3d-e2e5-4800-b547-8305c3a1f3d9
+		summarizeBy: sum
+		sourceColumn: DuesShareRate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Note
+		dataType: string
+		lineageTag: 1fc0e689-513d-4378-bee2-a2e418a31388
+		summarizeBy: none
+		sourceColumn: Note
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Settings = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    Settings_Table = Source{[Item="Settings",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Settings_Table,{{"ReserveTargetMonths", Int64.Type}, {"LastClosedMonth", Int64.Type}, {"DuesShareRate", type number}, {"Note", type text}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"LastClosedMonth", type date}})
+				in
+				    #"Changed Type1"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

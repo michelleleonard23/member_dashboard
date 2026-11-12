@@ -1,0 +1,92 @@
+table _Measures_YTD
+	lineageTag: 09cebfd9-ae72-49ed-a6bc-58a125765fc6
+
+	measure 'Revenue Actual YTD' = CALCULATE ( [Revenue Actual], DATESYTD ( DimDate[Date] ) )
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 4f8ae86e-47d4-4867-badb-125084f14e3a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Expense Actual YTD' = CALCULATE ( [Expense Actual], DATESYTD ( DimDate[Date] ) )
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 8fa0752c-de99-4d87-a25b-317796a7f14d
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue Budget YTD' = ```
+			
+			CALCULATE ( [Revenue Budget], DATESYTD ( DimDate[Date] ), KEEPFILTERS ( DimDate[IsClosed] = "Yes" ) )
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 1c56792a-de93-4b3f-8f81-96f7c3c8f85f
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Expense Budget YTD' = ```
+			
+			CALCULATE ( [Expense Budget], DATESYTD ( DimDate[Date] ), KEEPFILTERS ( DimDate[IsClosed] = "Yes" ) )
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: ec796e82-1d61-48e5-ba6b-03b62948e2dd
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Expense Budget Full Year' = ```
+			
+			VAR _yr = MAX ( DimDate[Year] )
+			RETURN CALCULATE ( [Expense Budget], REMOVEFILTERS ( DimDate ), DimDate[Year] = _yr )
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 96843e29-a50a-4b35-b4de-37b281f29615
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Net Surplus YTD' = [Revenue Actual YTD] - [Expense Actual YTD]
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 086f58bd-0de7-4e0d-a96a-19c4e796525a
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Actual YTD' = CALCULATE ( [Actual Amount], DATESYTD ( DimDate[Date] ) )
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 02c22990-f846-476f-be6f-e0dffa996b6b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Budget YTD' = ```
+			
+			CALCULATE ( [Budget Amount], DATESYTD ( DimDate[Date] ), KEEPFILTERS ( DimDate[IsClosed] = "Yes" ) )
+			
+			```
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 7e5386f2-aa23-45d3-905b-f716f6eddf63
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: 44257770-4228-4d22-8b00-8af7de10309d
+		summarizeBy: none
+		sourceColumn: Column1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures_YTD = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

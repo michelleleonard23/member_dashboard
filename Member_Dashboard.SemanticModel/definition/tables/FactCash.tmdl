@@ -1,0 +1,73 @@
+table FactCash
+	lineageTag: 2b8d4850-2166-4dba-9f93-f9c3b9d3b91d
+
+	column MonthStart
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 82b9df57-04a3-4ecd-a2a2-9a82452902f4
+		summarizeBy: none
+		sourceColumn: MonthStart
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MonthEnd
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 88919805-ab1e-4688-a870-88eb3ceb30dc
+		summarizeBy: none
+		sourceColumn: MonthEnd
+
+		variation Variation
+			isDefault
+			relationship: 796dba52-1ff1-4397-a222-93a17a7490d6
+			defaultHierarchy: LocalDateTable_1f34c0e8-19b1-4063-bfc1-0eba6a2ebee3.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Fund
+		dataType: string
+		lineageTag: 2c51db55-8a23-4f81-83fe-fa648ea482f2
+		summarizeBy: none
+		sourceColumn: Fund
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndingBalance
+		dataType: decimal
+		formatString: 0
+		lineageTag: b402d61d-5f98-4772-977e-aab27144f009
+		summarizeBy: sum
+		sourceColumn: EndingBalance
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactCash = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    FactCash_Sheet = Source{[Item="FactCash",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(FactCash_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"MonthStart", Int64.Type}, {"MonthEnd", Int64.Type}, {"Fund", type text}, {"EndingBalance", type number}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"MonthStart", type date}, {"MonthEnd", type date}, {"EndingBalance", type number}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Changed Type1",{{"EndingBalance", Int64.Type}}),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Changed Type2",{{"EndingBalance", Currency.Type}})
+				in
+				    #"Changed Type3"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,69 @@
+table DimChapter
+	lineageTag: 6e3ae951-e028-4497-a543-6dc085341cd0
+
+	column ChapterID
+		dataType: string
+		lineageTag: 1fc3206f-a1cb-4d55-993c-6c6f12ce14d3
+		summarizeBy: none
+		sourceColumn: ChapterID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChapterName
+		dataType: string
+		lineageTag: c1d5548f-c322-4c40-9855-174eead203a2
+		summarizeBy: none
+		sourceColumn: ChapterName
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: f209cb84-1f92-4479-91e4-d299689b8ab9
+		summarizeBy: none
+		sourceColumn: State
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: d8fe8b08-50e5-4e10-9981-c9663fff78cb
+		summarizeBy: none
+		sourceColumn: Region
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column SizeBand
+		dataType: string
+		lineageTag: c0cf6701-2d73-4c46-808b-b92b7deb8d3e
+		summarizeBy: none
+		sourceColumn: SizeBand
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimChapter = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    DimChapter_Sheet = Source{[Item="DimChapter",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(DimChapter_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"ChapterID", type text}, {"ChapterName", type text}, {"State", type text}, {"Region", type text}, {"SizeBand", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

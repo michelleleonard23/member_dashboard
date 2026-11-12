@@ -1,0 +1,188 @@
+table _Measures_Labels
+	lineageTag: abc92a8d-4e8e-4712-baa6-1c0e38933806
+
+	measure 'Year Label' =
+			
+			SELECTEDVALUE ( DimDate[Year], YEAR ( [Last Closed Month] ) )
+		formatString: 0
+		lineageTag: f8e73053-3836-4e21-9e0a-afc7ffc60623
+
+	measure 'Period Label' =
+			
+			VAR _yr = MAX ( DimDate[Year] )
+			VAR _last = [Last Closed Month]
+			RETURN
+			    IF ( _yr = YEAR ( _last ),
+			        "January to " & FORMAT ( _last, "mmmm" ),
+			        "January to December " & _yr )
+		lineageTag: 7aff8a70-523a-4eff-8a56-fd858a06d96f
+
+	measure 'As Of Label' =
+			
+			"as of " & FORMAT ( CALCULATE ( MAX ( FactDues[MonthStart] ) ), "mmmm yyyy" )
+		lineageTag: 8ef2be80-937d-4c30-89c6-f43d4576cb43
+
+	measure 'Members Title' = "Paying members"
+		lineageTag: 1b619c16-be1d-4aa2-8515-33405bd3a86e
+
+	measure 'Per Member Title' = "Spending per member"
+		lineageTag: d81ae04e-e9ff-46db-87f7-9a0731035497
+
+	measure 'Chapters Title' = "Back to chapters"
+		lineageTag: 6efb33cf-a79a-45ed-9b98-b5546ef5137f
+
+	measure 'Of Every Dollar Label' = "of every $1 spent"
+		lineageTag: 375edb57-9af9-4f84-8521-83d7ce5d6f29
+
+	measure 'Figures Through Label' =
+			
+			"Figures through " & FORMAT ( [Last Closed Month], "mmmm yyyy" )
+		lineageTag: 23045076-89f6-49e5-9d7b-a6502fe9a4e8
+
+	measure 'Last Updated Label' = ```
+			
+			"Figures through " & FORMAT ( [Last Closed Month], "mmmm yyyy" ) & ". Sample data only."
+			
+			```
+		lineageTag: f70495cd-e4fc-4cb2-a9e2-07b08337434e
+
+	measure 'Spending Card Label' =
+			
+			"$" & FORMAT ( [Expense Actual YTD] / 1e6, "0.0" ) & "M spent vs. $"
+			    & FORMAT ( [Expense Budget YTD] / 1e6, "0.0" ) & "M planned"
+		lineageTag: 25fe0306-c149-43d9-9f4f-4d415b994cbb
+
+	measure 'Spending Card Title' = "Spending vs. budget"
+		lineageTag: b1b43bc5-7f8f-497c-a8e2-51c98d14c519
+
+	measure 'Surplus Card Label' = "Revenue minus spending, " & [Period Label]
+		lineageTag: 83efacb7-ea04-45fb-9fe5-755f817bb8cf
+
+	measure 'Surplus Card Title' = "Surplus so far"
+		lineageTag: 618a6039-e0a1-4406-9913-f938caba685e
+
+	measure 'Variance Display' = [Variance Favorable YTD] / 1000
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 9595a0b0-f938-4b53-b228-920b9275874b
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Revenue Card Label' =
+			
+			"$" & FORMAT ( [Revenue Actual YTD] / 1e6, "0.0" ) & "M received vs. $"
+			    & FORMAT ( [Revenue Budget YTD] / 1e6, "0.0" ) & "M planned"
+		lineageTag: c485ac19-bb3c-4d5c-8b1f-f82e61b0589a
+
+	measure 'Revenue Card Title' = "Revenue vs. budget"
+		lineageTag: e9ad957f-d125-4a19-9725-24e69d09ee8f
+
+	measure 'Reserve Status Color' = ```
+			
+			SWITCH ( [Reserve Status],
+			    "Meets target", "#2E7D32",
+			    "Below target", "#F9A825",
+			    "#C62828" )
+			
+			```
+		lineageTag: 05a70bcb-37e4-44af-91c4-e22c4a74eae7
+
+	measure 'Status Color' =
+			
+			SWITCH ( [Line Status],
+			    "Above plan", "#1F7A3A",
+			    "Under budget", "#1F7A3A",
+			    "Below plan", "#9A5B00",
+			    "Over budget", "#C4161C",
+			    "#555B61" )
+		lineageTag: ff889b6f-c185-4ff5-bf49-997e0a48db56
+
+	measure 'Spent Title' = "Spent in " & [Year Label]
+		lineageTag: a3a460cf-e9ee-431e-be4b-4f20768ad7df
+
+	measure 'Dues Dollar Headline' = ```
+			
+			"Of every $1 spent this year, " & [Chapters Cents per Dollar] & " cents went straight back to chapters."
+			
+			```
+		lineageTag: 635334dd-3e21-4dbb-9163-f9abf6b67ea7
+
+	measure 'Budget Period Note' =
+			
+			"Budget shown is for " & [Period Label] & " only, so it compares fairly to actuals."
+		lineageTag: dc836bae-a949-4f60-b548-fb974e9aed9b
+
+	measure 'Growth Card Label' = "from " & FORMAT ( [Paying Members LY], "#,0" ) & " a year ago"
+		lineageTag: 8a36fbe6-67f9-4222-99c0-ea97666c3bb5
+
+	measure 'Dues Share Label' = "of all revenue comes from member dues"
+		lineageTag: d90ca819-24d2-4496-ba2b-7797f71b5353
+
+	measure 'Gauge Max' = 6
+		formatString: 0
+		lineageTag: 17d9ad76-7bcd-45cd-b8b8-daa7ccaf85fa
+
+	measure 'Reserve Note' = ```
+			
+			   "Reserves cover " & FORMAT ( [Months of Reserves], "0.0" )
+			       & " months of spending. The target is "
+			       & [Reserve Target Months] & " months."
+			```
+		lineageTag: ab3f2771-e87c-4425-a153-0c28c19c81bd
+
+	measure 'Reserve Gap Label' =
+			
+			IF (
+			    [Reserve Gap $] > 0,
+			    "$" & FORMAT ( [Reserve Gap $] / 1e6, "0.0" ) & "M short of "
+			        & [Reserve Target Months] & " months",
+			    "Target met"
+			)
+		lineageTag: b754bf54-ac66-4ef1-80d9-3c99cbd31e0d
+
+	measure 'Restricted Label' = "can only be used as donors specified"
+		lineageTag: 679905e5-f1b8-49ce-b8e4-6354f1f9b362
+
+	measure 'Reserve Label' = "set aside by the board"
+		lineageTag: 336ee398-2e96-4d2c-9b25-99990d5d4717
+
+	measure 'Unrestricted Label' =
+			
+			FORMAT ( [Months of Unrestricted Cash], "0.0" ) & " months of spending"
+		lineageTag: 25d202a3-4980-4b18-aef8-79445cdd3f4b
+
+	measure 'Sent To Chapters Label' = "dues share and grants, " & [Year Label]
+		lineageTag: ca0c4603-9c4b-499a-bbca-3f6f4387e350
+
+	measure 'Dues Returned Label' = "of dues collected, not of total spending"
+		lineageTag: 278282d0-a02f-4e12-b6bb-e96a2e2c9a46
+
+	measure 'Per Quarter Label' = "per member, per quarter"
+		lineageTag: 66989f44-b7f3-4b2d-8209-3089ce021282
+
+	measure 'Grants Label' = "of " & COUNTROWS ( DimChapter ) & " chapters"
+		lineageTag: e40bea06-44aa-4b32-ac78-cfa8d4f1c311
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: 886c22bc-7508-44f6-8853-1e4d067db76d
+		summarizeBy: none
+		sourceColumn: Column1
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures_Labels = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,87 @@
+table FactDues
+	lineageTag: 5880973b-8922-4ab8-aa21-d7f22472fe79
+
+	column MonthStart
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b558266a-836d-4d2b-91db-863f90881886
+		summarizeBy: none
+		sourceColumn: MonthStart
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DuesType
+		dataType: string
+		lineageTag: 5aefe743-66cf-426d-95b7-2b1e48a9f49b
+		summarizeBy: none
+		sourceColumn: DuesType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayingMembers
+		dataType: int64
+		formatString: 0
+		lineageTag: b7b864f2-6dcc-4fbd-9cf3-23e1fced961e
+		summarizeBy: sum
+		sourceColumn: PayingMembers
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column NewMembers
+		dataType: int64
+		formatString: 0
+		lineageTag: 82598fe3-4e46-4196-9a51-e969302904b2
+		summarizeBy: sum
+		sourceColumn: NewMembers
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column LapsedMembers
+		dataType: int64
+		formatString: 0
+		lineageTag: 11462933-b98f-43a9-9c73-72515eb31f3b
+		summarizeBy: sum
+		sourceColumn: LapsedMembers
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DuesRevenue
+		dataType: decimal
+		lineageTag: 9ce579ed-4c58-4917-b781-c6c9affcb30d
+		summarizeBy: sum
+		sourceColumn: DuesRevenue
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition FactDues = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    FactDues_Sheet = Source{[Item="FactDues",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(FactDues_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"MonthStart", Int64.Type}, {"DuesType", type text}, {"PayingMembers", Int64.Type}, {"NewMembers", Int64.Type}, {"LapsedMembers", Int64.Type}, {"DuesRevenue", type number}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"MonthStart", type date}, {"DuesRevenue", Currency.Type}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

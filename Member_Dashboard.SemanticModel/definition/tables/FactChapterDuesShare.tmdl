@@ -1,0 +1,94 @@
+table FactChapterDuesShare
+	lineageTag: 63cd6a07-2165-428e-9ca9-64946df00363
+
+	column PaymentMonth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 775ec83e-cae6-45c3-b816-99016a76fa5e
+		summarizeBy: none
+		sourceColumn: PaymentMonth
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column QuarterEnd
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a6c4c9ba-df6e-4774-93cb-c9e5d4806cca
+		summarizeBy: none
+		sourceColumn: QuarterEnd
+
+		variation Variation
+			isDefault
+			relationship: 09331468-96e5-426d-bd42-a7a689f8c76b
+			defaultHierarchy: LocalDateTable_8e19d2bf-f437-4d2c-b9a2-db4e807b45e9.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ChapterID
+		dataType: string
+		lineageTag: 53099855-06b2-4bc5-a8ad-8fb5fbf758ba
+		summarizeBy: none
+		sourceColumn: ChapterID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column MembersInGoodStanding
+		dataType: int64
+		formatString: 0
+		lineageTag: 9ce1656a-83f3-41c5-8950-05beec1d9e09
+		summarizeBy: sum
+		sourceColumn: MembersInGoodStanding
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DuesShareAmount
+		dataType: decimal
+		lineageTag: 575aef2c-b7a4-41ce-910a-5024f6653797
+		summarizeBy: sum
+		sourceColumn: DuesShareAmount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GrantAmount
+		dataType: decimal
+		formatString: 0
+		lineageTag: 7e400b9c-c876-4c53-9d6c-146b23ea07f5
+		summarizeBy: sum
+		sourceColumn: GrantAmount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactChapterDuesShare = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    FactChapterDuesShare_Sheet = Source{[Item="FactChapterDuesShare",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(FactChapterDuesShare_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"PaymentMonth", Int64.Type}, {"QuarterEnd", Int64.Type}, {"ChapterID", type text}, {"MembersInGoodStanding", Int64.Type}, {"DuesShareAmount", type number}, {"GrantAmount", Int64.Type}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"PaymentMonth", type date}, {"QuarterEnd", type date}, {"MembersInGoodStanding", Int64.Type}, {"GrantAmount", Currency.Type}, {"DuesShareAmount", Currency.Type}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

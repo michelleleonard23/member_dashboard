@@ -1,0 +1,49 @@
+table DimDepartment
+	lineageTag: 6b361709-928a-49ed-b2b2-94c3d173235c
+
+	column DeptID
+		dataType: string
+		lineageTag: 6239f955-74cf-4095-9e63-76cc3054698b
+		summarizeBy: none
+		sourceColumn: DeptID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DepartmentName
+		dataType: string
+		lineageTag: fb30b32d-cf5e-4418-beef-3cda18ff6bcb
+		summarizeBy: none
+		sourceColumn: DepartmentName
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlainDescription
+		dataType: string
+		lineageTag: df3357b7-8396-45d8-a591-0ca9fa8240fb
+		summarizeBy: none
+		sourceColumn: PlainDescription
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDepartment = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    DimDepartment_Sheet = Source{[Item="DimDepartment",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(DimDepartment_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"DeptID", type text}, {"DepartmentName", type text}, {"PlainDescription", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
