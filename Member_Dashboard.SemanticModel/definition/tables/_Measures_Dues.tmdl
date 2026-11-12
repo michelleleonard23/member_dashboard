@@ -88,7 +88,5 @@ table _Measures_Dues
 				in
 				    #"Changed Type"
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

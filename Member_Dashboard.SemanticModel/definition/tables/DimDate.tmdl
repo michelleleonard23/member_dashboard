@@ -115,7 +115,7 @@ table DimDate
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\Member Dashboard\Member_Finance_Sample_Model.xlsx"), null, true),
 				    DimDate_Sheet = Source{[Item="DimDate",Kind="Sheet"]}[Data],
 				    #"Promoted Headers" = Table.PromoteHeaders(DimDate_Sheet, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", Int64.Type}, {"Year", Int64.Type}, {"Quarter", type text}, {"MonthNum", Int64.Type}, {"MonthName", type text}, {"MonthYear", type date}, {"MonthStart", Int64.Type}, {"YearMonthKey", Int64.Type}, {"IsClosed", type text}}),

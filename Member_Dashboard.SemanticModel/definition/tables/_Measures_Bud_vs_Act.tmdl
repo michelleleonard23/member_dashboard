@@ -62,7 +62,5 @@ table _Measures_Bud_vs_Act
 				in
 				    #"Changed Type"
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

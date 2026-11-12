@@ -35,7 +35,7 @@ table DimDepartment
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\Member Dashboard\Member_Finance_Sample_Model.xlsx"), null, true),
 				    DimDepartment_Sheet = Source{[Item="DimDepartment",Kind="Sheet"]}[Data],
 				    #"Changed Type" = Table.TransformColumnTypes(DimDepartment_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
 				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),

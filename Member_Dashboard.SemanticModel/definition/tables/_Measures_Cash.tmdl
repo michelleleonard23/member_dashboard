@@ -108,7 +108,5 @@ table _Measures_Cash
 				in
 				    #"Changed Type"
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

@@ -56,14 +56,12 @@ table Settings
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\Member Dashboard\Member_Finance_Sample_Model.xlsx"), null, true),
 				    Settings_Table = Source{[Item="Settings",Kind="Table"]}[Data],
 				    #"Changed Type" = Table.TransformColumnTypes(Settings_Table,{{"ReserveTargetMonths", Int64.Type}, {"LastClosedMonth", Int64.Type}, {"DuesShareRate", type number}, {"Note", type text}}),
 				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"LastClosedMonth", type date}})
 				in
 				    #"Changed Type1"
-
-	changedProperty = Name
 
 	annotation PBI_NavigationStepName = Navigation
 

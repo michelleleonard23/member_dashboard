@@ -80,7 +80,7 @@ table FactChapterDuesShare
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\Member Dashboard\Member_Finance_Sample_Model.xlsx"), null, true),
 				    FactChapterDuesShare_Sheet = Source{[Item="FactChapterDuesShare",Kind="Sheet"]}[Data],
 				    #"Promoted Headers" = Table.PromoteHeaders(FactChapterDuesShare_Sheet, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"PaymentMonth", Int64.Type}, {"QuarterEnd", Int64.Type}, {"ChapterID", type text}, {"MembersInGoodStanding", Int64.Type}, {"DuesShareAmount", type number}, {"GrantAmount", Int64.Type}}),

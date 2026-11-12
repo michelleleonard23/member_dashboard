@@ -55,7 +55,7 @@ table DimChapter
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\Member Dashboard\Member_Finance_Sample_Model.xlsx"), null, true),
 				    DimChapter_Sheet = Source{[Item="DimChapter",Kind="Sheet"]}[Data],
 				    #"Changed Type" = Table.TransformColumnTypes(DimChapter_Sheet,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}}),
 				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),

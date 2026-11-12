@@ -86,7 +86,5 @@ table _Measures_YTD
 				in
 				    #"Changed Type"
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

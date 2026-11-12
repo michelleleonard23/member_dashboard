@@ -45,7 +45,5 @@ table _Measures_Dues_Go
 				in
 				    #"Changed Type"
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

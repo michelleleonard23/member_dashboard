@@ -182,7 +182,5 @@ table _Measures_Labels
 				in
 				    #"Changed Type"
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

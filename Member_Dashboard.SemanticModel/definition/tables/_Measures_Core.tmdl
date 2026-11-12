@@ -67,7 +67,5 @@ table _Measures_Core
 				in
 				    #"Changed Type"
 
-	changedProperty = Name
-
 	annotation PBI_ResultType = Table
 

@@ -92,7 +92,7 @@ table DimAccount
 		mode: import
 		source =
 				let
-				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\DSA\Power BI DSA\DSA_National_Finance_Sample_Model.xlsx"), null, true),
+				    Source = Excel.Workbook(File.Contents("C:\Users\miche\OneDrive\Desktop\Member Dashboard\Member_Finance_Sample_Model.xlsx"), null, true),
 				    DimAccount_Sheet = Source{[Item="DimAccount",Kind="Sheet"]}[Data],
 				    #"Promoted Headers" = Table.PromoteHeaders(DimAccount_Sheet, [PromoteAllScalars=true]),
 				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"AccountID", type text}, {"AccountName", type text}, {"Type", type text}, {"Group", type text}, {"PlainLabel", type text}, {"DefaultDeptID", type text}, {"SortOrder", Int64.Type}})
