@@ -109,3 +109,14 @@ Replace the rows in each table but keep the column names the same. Before sharin
 
 - Power BI Desktop
 - Excel (sample data)
+
+## About Me
+
+I'm Michelle Leonard, a finance and data professional with 20+ years of experience turning messy multi-system data into reporting that leaders trust and use.
+
+- **LinkedIn:** [linkedin.com/in/michelle-leonard-331126b](https://www.linkedin.com/in/michelle-leonard-331126b)
+
+### More of my work
+
+- [Higher Ed Financial Dashboard](https://github.com/michelleleonard23/higher-ed-financial-dashboard)
+- [Overtime Dashboard](https://github.com/michelleleonard23/overtime-dashboard)
