@@ -22,7 +22,7 @@ Every page shares a header, a page navigator, a Year slicer, and a "Figures thro
 
 | File | What it is |
 | --- | --- |
-| `Member_Dashboard.pbip` (+ folders) | The Power BI project, saved as text so changes are visible in Git |
+| `Member_Dashboard.pbix` | The Power BI report |
 | `Member_Finance_Sample_Model.xlsx` | The sample data, as 10 Excel tables |
 | `Member_Dashboard.pdf` | A PDF export of all five pages |
 | `README.md` | This file |
@@ -76,7 +76,7 @@ Design choices worth noting:
 
 ## How to use it
 
-1. Open `Member_Dashboard.pbip` in Power BI Desktop.
+1. Open `Member_Dashboard.pbix` in Power BI Desktop.
 2. If prompted, point the data source to your copy of `Member_Finance_Sample_Model.xlsx` (Transform data > Data source settings > Change source).
 3. Refresh.
 
